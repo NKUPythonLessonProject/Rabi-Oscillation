@@ -38,22 +38,19 @@ def Get_c_ops(kappa, gamma, n_th_a):  # 衰减
     return c_op_list
 
 
-def test_func(m, a, b):
-    return a * np.sin(b * m)
-
-
-def Get_omega(x, y):  # 三角拟合
-    params, params_covariance = optimize.curve_fit(test_func, x, y, p0=[2, 2])
+def Get_omega(x, y, p=None):  # 三角拟合
+    test_func = lambda r, a1, a2, a3: a1 * np.cos(a2 * r + a3)
+    params, params_covariance = optimize.curve_fit(test_func, x, y, p0=p)
     return params[1]
 
 
-def Get_N_op_photon():  # aa+
-    return a * a.dag()
+def Get_N_op_photon():  #
+    return a.dag() * a
 
 
-def Get_N_op_ground():  # s+s-
+def Get_N_op_excited():
     return sm.dag() * sm
 
 
-def Get_N_op_excited():  # s-s+
+def Get_N_op_ground():
     return sm * sm.dag()
